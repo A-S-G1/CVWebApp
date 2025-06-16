@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %} {# Make sure this line is at the top of the template #}
+{% load portfolio_filters %} {# Load your custom filters #}
+
+{% block title %}About Me - Anton G.{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* No page-specific styles needed here, as they are in style.css for global application. */
+    </style>
+{% endblock %}
+
+{% block content %}
+    {# About Me Content Section #}
+    <section class="anime-card p-8 rounded-xl shadow-lg mb-8 transition-all duration-500 transform opacity-0 translate-y-4 anime-glow-card">
+        <h2 class="text-4xl font-bold text-gray-900 mb-6 text-center anime-shimmer uppercase">About Me</h2>
+        <div class="flex flex-col lg:flex-row items-center lg:items-start space-y-8 lg:space-y-0 lg:space-x-10">
+            <div class="flex-shrink-0 text-center">
+                {# Display profile image from AboutMeContent model #}
+                {% if my_info.profile_image %}
+                    <img src="{{ my_info.profile_image.url }}" alt="Anton Georgiiev" class="rounded-full w-40 h-40 object-cover border-4 border-red-500 shadow-xl ring-4 ring-gray-300 transform hover:scale-105 transition-transform duration-300 anime-pulse-small">
+                {% else %}
+                    {# Fallback placeholder if no image uploaded #}
+                    <img src="{% static 'portfolio/img/default_profile.png' %}" alt="Default Profile" class="rounded-full w-40 h-40 object-cover border-4 border-red-500 shadow-xl ring-4 ring-gray-300 transform hover:scale-105 transition-transform duration-300 anime-pulse-small">
+                {% endif %}
+                <h3 class="text-3xl font-bold text-gray-900 mt-6">{{ my_info.title }}</h3>
+            </div>
+            <div class="text-center lg:text-left flex-grow">
+                {# Main bio content with tech-inspired styling #}
+                <div class="bio-box text-lg text-gray-700 leading-relaxed mb-8 whitespace-pre-line font-mono-code">
+                    <p>{{ my_info.bio_content }}</p>
+                </div>
+                
+                {# Contact Information Section #}
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 uppercase">Contact & Online Presence</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-base">
+                    {% if my_info.email %}<p><strong class="font-semibold text-gray-800">Email:</strong> <a href="mailto:{{ my_info.email }}" class="text-red-600 hover:underline transition-colors duration-200">{{ my_info.email }}</a></p>{% endif %}
+                    {% if my_info.phone %}<p><strong class="font-semibold text-gray-800">Phone:</strong> {{ my_info.phone }}</p>{% endif %}
+                    {% if my_info.address %}<p><strong class="font-semibold text-gray-800">Address:</strong> {{ my_info.address }}</p>{% endif %}
+                    {% if my_info.linkedin %}<p><strong class="font-semibold text-gray-800">LinkedIn:</strong> <a href="{{ my_info.linkedin }}" target="_blank" class="text-red-600 hover:underline transition-colors duration-200">Connect on LinkedIn</a></p>{% endif %}
+                    {% if my_info.github %}<p><strong class="font-semibold text-gray-800">GitHub:</strong> <a href="{{ my_info.github }}" target="_blank" class="text-red-600 hover:underline transition-colors duration-200">View GitHub Profile</a></p>{% endif %}
+                    {% if my_info.languages %}
+                        <div>
+                            <strong class="font-semibold text-gray-800">Languages:</strong>
+                            <ul class="list-none inline-block ml-2">
+                                {# Split languages string by comma and iterate #}
+                                {% for lang in my_info.languages|split:"," %}
+                                    <li class="inline-block bg-gray-200 text-gray-900 px-2 py-0.5 rounded-full text-sm mr-1 mb-1 anime-pulse-small"> {{ lang|strip }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# Education Section (using data fetched from the database) #}
+    <section class="anime-card p-8 rounded-xl shadow-lg mb-8 transition-all duration-500 transform opacity-0 translate-y-4 anime-glow-card">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center anime-shimmer uppercase">Education</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% if education %}
+                {% for edu in education %}
+                    <div class="anime-card-inner border-gray-400 rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 bg-gray-50"> {# Renamed to anime-card-inner and set background #}
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ edu.institution }}</h3>
+                        <p class="text-lg text-gray-700 mb-1">{{ edu.degree }}</p>
+                        <p class="text-md text-gray-600 font-mono-code">{{ edu.duration }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-600 col-span-full text-center text-lg">No education listed yet. Please add entries via the admin panel!</p>
+            {% endif %}
+        </div>
+    </section>
+
+    {# Achievements Section (using data fetched from the database) #}
+    <section class="anime-card p-8 rounded-xl shadow-lg transition-all duration-500 transform opacity-0 translate-y-4 anime-glow-card">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6 text-center anime-shimmer uppercase">Achievements</h2>
+        {% if achievements %}
+            <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                {% for achievement in achievements %}
+                    <li>{{ achievement.description }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-600 text-center text-lg">No achievements listed yet. Please add entries via the admin panel!</p>
+        {% endif %}
+    </section>
+{% endblock %}

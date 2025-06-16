@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact & Feedback{% endblock %}
+
+{% block content %}
+    <section class="bg-white p-8 rounded-xl shadow-lg transition-all duration-500 transform opacity-0 translate-y-4">
+        <h2 class="text-4xl font-bold text-blue-800 mb-6 text-center">Get in Touch</h2>
+        <p class="text-lg text-gray-700 text-center mb-8">
+            Have feedback about my web app or a work offer? Please fill out the form below!
+        </p>
+
+        {# Display success message if email was sent successfully #}
+        {% if success_message %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">Success!</strong>
+                <span class="block sm:inline">{{ success_message }}</span>
+            </div>
+        {% endif %}
+
+        {# Display error message if email sending failed #}
+        {% if error_message %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">{{ error_message }}</span>
+            </div>
+        {% endif %}
+
+        <form method="post" class="space-y-6 max-w-lg mx-auto">
+            {% csrf_token %} {# Django's security token for forms #}
+
+            {# Render Name field #}
+            <div>
+                {{ form.name.label_tag }} {# Renders <label for="id_name">Name:</label> #}
+                {{ form.name }} {# Renders the input field #}
+                {% if form.name.errors %} {# Display validation errors for name field #}
+                    <p class="text-red-500 text-xs italic mt-1">{{ form.name.errors }}</p>
+                {% endif %}
+            </div>
+
+            {# Render Email field #}
+            <div>
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ form.email.errors }}</p>
+                {% endif %}
+            </div>
+
+            {# Render Message field #}
+            <div>
+                {{ form.message.label_tag }}
+                {{ form.message }}
+                {% if form.message.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ form.message.errors }}</p>
+                {% endif %}
+            </div>
+
+            {# Render Subject Type (radio buttons) #}
+            <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+                <strong class="font-semibold text-gray-700">{{ form.subject_type.label_tag }}</strong>
+                <div class="flex space-x-4">
+                    {% for radio in form.subject_type %}
+                        <label class="inline-flex items-center cursor-pointer">
+                            {{ radio.tag }}
+                            <span class="ml-2 text-gray-700 text-base">{{ radio.choice_label }}</span>
+                        </label>
+                    {% endfor %}
+                </div>
+                {% if form.subject_type.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ form.subject_type.errors }}</p>
+                {% endif %}
+            </div>
+
+            {# Submit button #}
+            <div class="text-center">
+                <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300 text-lg font-semibold shadow-md">
+                    Send Message <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+            </div>
+
+            {# Display non-field errors (e.g., global form errors) #}
+            {% if form.non_field_errors %}
+                <div class="text-red-500 text-sm mt-4">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+    </section>
+{% endblock %}

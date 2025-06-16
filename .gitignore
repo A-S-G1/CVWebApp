@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.Python
+.pytest_cache/
+.env             # Your environment variables file (VERY IMPORTANT!)
+venv/            # Your virtual environment folder
+env/             # Another common name for virtual environment folder
+pip-log.txt
+pip-delete-this-arg.txt
+
+# Django specific
+db.sqlite3       # Your development database file (VERY IMPORTANT!)
+media/           # User-uploaded media files (if you serve them locally)
+
+# IDEs and OS
+.DS_Store
+.idea/           # PyCharm or other IDE specific files
+*.sublime-project
+*.sublime-workspace
+Thumbs.db
+ehthumbs.db
+.localized
+.vscode/         # VS Code specific files (unless you want to share settings)
+
+# Deployment
+staticfiles_collected/ # The folder where 'collectstatic' gathers files

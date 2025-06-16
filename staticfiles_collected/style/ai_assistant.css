@@ -1,0 +1,100 @@
+/* my_website_project/static/css/ai_assistant.css */
+
+#ai-assistant-container {
+    /* Ensures the container is positioned correctly and toggle button is styled */
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 50;
+}
+
+#ai-assistant-toggle {
+    /* Styles the button that opens the chat window */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem; /* Equivalent to w-14 */
+    height: 3.5rem; /* Equivalent to h-14 */
+    background-color: #3b82f6; /* blue-600 */
+    color: white;
+    border-radius: 9999px; /* rounded-full */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-lg */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#ai-assistant-toggle:hover {
+    background-color: #2563eb; /* blue-700 */
+}
+
+#ai-assistant-toggle .w-10 {
+    width: 2.5rem; /* w-10 */
+}
+
+#ai-assistant-toggle .h-10 {
+    height: 2.5rem; /* h-10 */
+}
+
+
+#ai-assistant-window {
+    position: absolute;
+    bottom: calc(100% + 10px); /* Position above the toggle button */
+    right: 0;
+    transform-origin: bottom right;
+    transform: scale(0.8); /* Start slightly smaller */
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    z-index: 1000; /* Ensure it's above other content */
+
+    /* Tailwind equivalent classes */
+    background-color: white;
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-xl */
+    width: 20rem; /* w-80 */
+    height: 24rem; /* h-96 */
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e2e8f0; /* border border-gray-200 */
+}
+
+#ai-assistant-window.show {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Chat message bubbles */
+.ai-message, .user-message {
+    padding: 0.5rem; /* p-2 */
+    border-radius: 0.5rem; /* rounded-lg */
+    margin-bottom: 0.75rem; /* mb-3 */
+    word-wrap: break-word;
+    max-width: calc(100% - 40px); /* Adjust based on avatar width (w-6 + space-x-2) */
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.25rem; /* leading-5 */
+}
+
+.ai-message {
+    background-color: #eff6ff; /* blue-100 */
+    color: #1e40af; /* blue-900 */
+    align-self: flex-start;
+}
+
+.user-message {
+    background-color: #3b82f6; /* blue-500 */
+    color: white;
+    align-self: flex-end;
+}
+
+/* Specific styling for the message container */
+#ai-assistant-messages {
+    display: flex;
+    flex-direction: column; /* Ensure messages stack */
+}
+
+/* Avatar styling */
+.w-6 { width: 1.5rem; } /* For avatars within chat messages */
+.h-6 { height: 1.5rem; }
+.w-8 { width: 2rem; }   /* For avatar in header */
+.h-8 { height: 2rem; }
+.w-10 { width: 2.5rem; } /* For avatar in toggle button */
+.h-10 { height: 2.5rem; }

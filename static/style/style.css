@@ -1,0 +1,207 @@
+/* my_website_project/static/css/style.css */
+
+/* Base font family is now set in base.html for the body tag directly via <style> or Tailwind */
+/*
+body {
+    font-family: 'Oswald', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.font-mono-code {
+    font-family: 'Roboto Mono', monospace;
+}
+*/
+
+/* Ensure images within content blocks are responsive */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes extra space below images */
+}
+
+/* Basic link styling - largely handled by Tailwind now */
+a {
+    text-decoration: none;
+}
+
+/* Custom styles for navigation hover effect (more vibrant/anime-like) */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -8px; /* Slightly lower, more pronounced */
+    left: 50%; /* Start from center */
+    transform: translateX(-50%); /* Center the line */
+    width: 0;
+    height: 3px; /* Thicker line */
+    background: linear-gradient(90deg, #dc2626, #ef4444); /* Red gradient (red-600 to red-500) */
+    border-radius: 2px; /* Soft edges */
+    transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Faster, smoother animation */
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.7); /* Subtle glow */
+    opacity: 0; /* Start invisible */
+}
+
+.nav-link:hover::after {
+    width: 100%;
+    opacity: 1; /* Fully visible on hover */
+}
+
+/* Custom scrollbar for elements like chat message container */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #262626; /* Dark track */
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #6b7280; /* Gray thumb */
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4b5563; /* Darker gray on hover */
+}
+
+/* --- New Anime-Inspired Design Features (Updated for Monochrome/Stark look) --- */
+
+/* General 'Glow' effect for cards/sections */
+.anime-glow-card {
+    position: relative;
+    overflow: hidden;
+    /* Base shadow for the card */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 1px solid #333; /* Dark border */
+    background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent white for content areas */
+}
+
+.anime-glow-card::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: linear-gradient(45deg, rgba(220, 38, 38, 0.2), rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2)); /* Red, white, black gradient glow */
+    filter: blur(15px); /* Soft blur for the glow */
+    z-index: -1;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0; /* Start invisible */
+}
+
+.anime-glow-card:hover {
+    transform: translateY(-8px); /* More pronounced lift effect */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+}
+
+.anime-glow-card:hover::before {
+    animation: glow-pulse 2s infinite alternate; /* Animates the glow */
+    opacity: 1; /* Fully visible on hover */
+}
+
+@keyframes glow-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* Subtle Shimmer Effect for text or specific elements (adapted for monochrome) */
+.anime-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 0%, #a0a0a0 20%, #f0f0f0 40%, #f0f0f0 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Simple pulsating effect for small interactive elements */
+.anime-pulse-small {
+    animation: pulse-small 1.5s infinite;
+}
+
+@keyframes pulse-small {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Bio Box Styling (adapted for monochrome/gritty) */
+.bio-box {
+    background-color: #ffffff; /* White background for bio */
+    border: 1px solid #333; /* Dark border */
+    border-radius: 0.75rem; /* Rounded corners */
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Stronger subtle shadow */
+}
+.bio-box::before, .bio-box::after {
+    font-family: 'Roboto Mono', monospace; /* Monospace font for "code" elements */
+    color: #6b7280; /* Darker gray for brackets */
+    font-size: 1.8rem; /* Slightly larger brackets */
+    position: absolute;
+    font-weight: bold; /* Make brackets bold */
+}
+.bio-box::before {
+    content: '>> START BIO <<'; /* More explicit tags */
+    left: 0.5rem;
+    top: 0.5rem;
+}
+.bio-box::after {
+    content: '>> END BIO <<'; /* More explicit tags */
+    right: 0.5rem;
+    bottom: 0.5rem;
+}
+.bio-box p {
+    padding: 1rem 0; /* More padding for bio text */
+    line-height: 1.75; /* Increased line height for readability */
+}
+
+/* Skill Item Styling (adapted for monochrome/gritty) */
+.skill-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: rgba(240, 240, 240, 0.85); /* Light gray transparent background */
+    border-radius: 0.5rem;
+    border: 1px solid #a0a0a0; /* Medium gray border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+.skill-item:hover {
+    transform: translateY(-5px); /* More pronounced lift */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+.skill-icon {
+    color: #dc2626; /* Red for emphasis */
+    margin-right: 0.75rem;
+}
+.skill-level {
+    font-weight: 700; /* Bolder level text */
+    color: #262626; /* Dark gray */
+}
+
+/* Project/Education/Experience Card Styling (similar to tech-card but adapted) */
+.anime-card {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* AI Assistant Chat Bubble Styling (darker theme) */
+#ai-assistant-window .ai-message {
+    background-color: #4b5563; /* Darker gray for AI messages */
+    color: #f3f4f6; /* Lighter text */
+}
+#ai-assistant-window .user-message {
+    background-color: #dc2626; /* Red for user messages */
+    color: white;
+}

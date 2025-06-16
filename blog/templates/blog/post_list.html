@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog - My Latest Thoughts{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Full-screen video background styling */
+    .video-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1; /* Puts the video behind other content */
+    }
+    .video-background iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 100vh;
+        min-width: 100%;
+        min-height: 100%;
+        transform: translate(-50%, -50%); /* Centers the video */
+        object-fit: cover; /* Ensures video covers the area without distortion */
+        pointer-events: none; /* Prevents clicks on the video background */
+        filter: brightness(0.5); /* Darken video for better text readability */
+    }
+    /* Responsive video sizing for aspect ratio */
+    @media (min-aspect-ratio: 16/9) {
+        .video-background iframe {
+            height: 56.25vw; /* 100 / (16/9) */
+        }
+    }
+    @media (max-aspect-ratio: 16/9) {
+        .video-background iframe {
+            width: 177.78vh; /* 100 / (9/16) */
+        }
+    }
+
+    /* Content overlay for readability over the video */
+    .content-overlay {
+        position: relative;
+        z-index: 1; /* Ensures content is above the video */
+        padding: 2rem;
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        border-radius: 1rem;
+        backdrop-filter: blur(5px); /* Optional: applies a blur effect to the background behind the content */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="relative min-h-[600px] flex items-center justify-center text-center">
+    <div class="video-background">
+        {# YouTube video embed. Parameters: controls=0 (no controls), showinfo=0 (no video info), rel=0 (no related videos), autoplay=1 (autoplay), loop=1 (loop), mute=1 (start muted), playlist=ID (for looping a single video) #}
+        <iframe
+            src="https://www.youtube.com/embed/{{ youtube_video_id }}?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&mute=1&playlist={{ youtube_video_id }}"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            loading="lazy"
+        ></iframe>
+    </div>
+    <div class="content-overlay w-full max-w-2xl mx-auto text-center">
+        <h2 class="text-5xl font-extrabold text-blue-900 mb-6 drop-shadow-lg">My Thoughts & Updates</h2>
+        <p class="text-xl text-gray-800 mb-8 leading-relaxed">
+            Welcome to my blog! Here you'll find articles, insights, and updates on my journey in software development and beyond.
+        </p>
+        <a href="#posts-section" class="bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-800 transition-colors duration-300 shadow-xl">
+            Read My Posts <i class="fas fa-arrow-down ml-2"></i>
+        </a>
+    </div>
+</div>
+
+<section id="posts-section" class="bg-white p-8 rounded-xl shadow-lg mt-8 mb-8 transition-all duration-500 transform opacity-0 translate-y-4">
+    <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center">Latest Posts</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for post in posts %}
+            <div class="border border-blue-200 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white">
+                {# Placeholder image if no post-specific image is available, or if post.image field is not used #}
+                <img src="https://placehold.co/400x200/F0F8FF/333333?text=Post+Image" alt="Placeholder" class="w-full h-48 object-cover border-b border-blue-100">
+                <div class="p-5">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ post.title }}</h3>
+                    {# Truncate content for list view #}
+                    <p class="text-gray-700 text-sm mb-4 leading-relaxed">{{ post.content|truncatechars:150 }}</p>
+                    <a href="{% url 'blog:post_detail' slug=post.slug %}" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-300 text-base font-semibold shadow-md">
+                        Read More <i class="fas fa-chevron-right ml-1"></i>
+                    </a>
+                    <p class="text-xs text-gray-500 mt-4">Posted on: {{ post.created_at|date:"F d, Y" }} by {{ post.author }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-gray-600 col-span-full text-center text-lg">No posts available yet. Start writing your first post!</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

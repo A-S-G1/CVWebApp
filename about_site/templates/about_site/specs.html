@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Tech Specs - Anton G.{% endblock %}
+
+{% block content %}
+    <section class="bg-white p-8 rounded-xl shadow-lg transition-all duration-500 transform opacity-0 translate-y-4">
+        <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center">Web App Specifications</h2>
+        <p class="text-lg text-gray-700 text-center mb-10">
+            This section details the core languages, frameworks, and technologies used to build this portfolio and blog application.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {% for category, details in tech_specs.items %}
+                <div class="border border-blue-200 rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300 bg-blue-50">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-4">{{ category }}</h3>
+                    {# Check if details is a string (for top-level entries like Deployment) #}
+                    {% if details is string %}
+                        <p class="text-lg text-gray-800">{{ details }}</p>
+                    {% else %}
+                        <ul class="list-none space-y-2">
+                            {% for key, value in details.items %}
+                                <li><strong class="font-semibold text-gray-800">{{ key }}:</strong> {{ value }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

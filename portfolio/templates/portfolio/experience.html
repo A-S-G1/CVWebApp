@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %} {# Make sure this is present for static files like project images #}
+
+{% block title %}My Projects - Anton G.{% endblock %}
+
+{% block content %}
+    <section class="bg-white p-8 rounded-xl shadow-lg transition-all duration-500 transform opacity-0 translate-y-4">
+        <h2 class="text-4xl font-bold text-blue-800 mb-8 text-center">My Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% if projects %} {# 'projects' now refers to the list of Project model objects #}
+                {% for project_obj in projects %} {# Renamed loop variable to avoid conflict #}
+                    <div class="border border-blue-200 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden bg-white">
+                        {% if project_obj.image %}
+                            <img src="{{ project_obj.image.url }}" alt="{{ project_obj.title }}" class="w-full h-56 object-cover border-b border-blue-100">
+                        {% else %}
+                            {# Placeholder image if no project-specific image is uploaded #}
+                            <img src="https://placehold.co/400x250/A0A0A0/333333?text=Project+Image" alt="Placeholder" class="w-full h-56 object-cover border-b border-blue-100">
+                        {% endif %}
+                        <div class="p-5">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-3">{{ project_obj.title }}</h3>
+                            <p class="text-gray-700 text-sm mb-5 leading-relaxed">{{ project_obj.description }}</p>
+                            <div class="flex flex-wrap gap-3">
+                                {% if project_obj.app_link %}
+                                    <a href="{{ project_obj.app_link }}" target="_blank" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors duration-300 text-base font-semibold shadow-md">View App</a>
+                                {% endif %}
+                                {% if project_obj.github_link %}
+                                    <a href="{{ project_obj.github_link }}" target="_blank" class="bg-gray-700 text-white px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors duration-300 text-base font-semibold shadow-md">GitHub Repo</a>
+                                {% endif %}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-4">Added on: {{ project_obj.created_at|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-600 col-span-full text-center text-lg">No projects listed yet. Please add them via the admin panel!</p>
+                {% endfor %}
+            {% else %}
+                <p class="text-gray-600 col-span-full text-center text-lg">No projects listed yet. Please add them via the admin panel!</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

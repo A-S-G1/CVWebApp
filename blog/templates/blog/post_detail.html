@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Blog{% endblock %}
+
+{% block content %}
+<section class="bg-white p-8 rounded-xl shadow-lg mb-8 transition-all duration-500 transform opacity-0 translate-y-4">
+    <h2 class="text-4xl font-bold text-blue-800 mb-4 text-center">{{ post.title }}</h2>
+    <p class="text-sm text-gray-600 text-center mb-6">By {{ post.author }} | {{ post.created_at|date:"F d, Y" }}</p>
+    
+    {# Optional: If you added an image field to your Post model, uncomment this #}
+    {# {% if post.image %}
+        <div class="mb-6 flex justify-center">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="rounded-lg shadow-md max-h-80 object-cover">
+        </div>
+    {% endif %} #}
+
+    <div class="prose max-w-none text-lg text-gray-800 leading-relaxed">
+        {# |linebreaksbr filter converts newlines to <br> tags for HTML rendering #}
+        {{ post.content|linebreaksbr }} 
+    </div>
+
+    <div class="mt-8 text-center">
+        <a href="{% url 'blog:post_list' %}" class="bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors duration-300 text-base font-semibold shadow-md">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Posts
+        </a>
+    </div>
+</section>
+{% endblock %}
